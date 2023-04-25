@@ -40,18 +40,19 @@ const Customizer = () => {
     }
   }
   const handleSubmit = async (type) => {
-    if(!prompt) return alert("Please enter a prompt");
+    console.log(prompt);
+    if(prompt==="") return alert("Please enter a prompt");
 
     try {
       setgeneratingImg(true);
 
-      const response = await fetch('http://localhost:5000/api/v1/dalle', {
+      const response = await fetch('http://localhost:5000/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          prompt,
+          prompt: prompt,
         })
       })
 
@@ -112,6 +113,7 @@ const Customizer = () => {
     <AnimatePresence>
     {!snap.intro && (
     <>
+    
     <motion.div key='custom' className=' top-0 left-0 z-10 absolute' {...slideAnimation('left')}>
     <div className=" flex items-center min-h-screen">
       <div className=" editortabs-container tabs">
@@ -127,6 +129,7 @@ const Customizer = () => {
       </div>
     </div>
     </motion.div>
+   
     <motion.div className='absolute z-10 top-5 right-5'
     {...fadeAnimation}
     >
@@ -152,6 +155,18 @@ const Customizer = () => {
         ))
           }
     </motion.div>
+    <motion.div className='absolute z-10 bottom-5 right-5'
+    {...fadeAnimation}
+    >
+      <CustomButton
+      title={'Download'}
+      handleClick={()=>{downloadCanvasToImage(config.canvasId)}}
+      customStyles={'w-fit py-2.5 px-4 font-bold text-sm'}
+      type={'filled'}
+      />
+
+    </motion.div>
+   
     </>
   )}
   </AnimatePresence>
